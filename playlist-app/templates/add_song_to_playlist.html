@@ -1,9 +1,18 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <h1>Add a song to {{ playlist.name }}</h1>
 
-<h1>Add a form that when submitted adds a song to this playlist!</h1>
+<form method="POST" action="/playlists/{{ playlist.id }}/add-song">
+  {% for field in form %} {% if field.type == "CSRFTokenField" %} {{ field() }}
+  {% else %}
+  <div>
+    {{ field.label }}<br />
+    {{ field }} {% if field.errors %} {% for error in field.errors %}
+    <span style="color: red">{{ error }}</span>
+    {% endfor %} {% endif %}
+  </div>
+  {% endif %} {% endfor %}
+  <input type="submit" value="Submit" />
+</form>
 
 {% endblock %}
